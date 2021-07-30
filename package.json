@@ -6,6 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "src/*",
+    "dist/*"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ericnam/react-donut-cursor"
@@ -23,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/ericnam/react-donut-cursor/issues"
   },
-  "homepage": "https://github.com/ericnam/react-donut-cursor"
+  "homepage": "https://github.com/ericnam/react-donut-cursor",
+  "devDependencies": {
+    "webpack": "^5.47.1"
+  }
 }
