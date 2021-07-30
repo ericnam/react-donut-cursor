@@ -1,6 +1,6 @@
 {
   "name": "react-donut-cursor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Create a customizable, animated cursor to add a stylish flare to your webpage in ReactJS.",
   "main": "index.js",
   "scripts": {
