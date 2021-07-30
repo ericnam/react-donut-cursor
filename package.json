@@ -25,7 +25,5 @@
     "url": "https://github.com/ericnam/react-donut-cursor/issues"
   },
   "homepage": "https://github.com/ericnam/react-donut-cursor",
-  "devDependencies": {
-    "webpack": "^5.47.1"
-  }
+  "devDependencies": {}
 }
