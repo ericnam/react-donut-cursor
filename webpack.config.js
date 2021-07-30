@@ -52,6 +52,9 @@ module.exports = {
       // },
     ],
   },
+  optimization: {
+    minimize: false,
+  },
   // resolve: {
   //   extensions: [".tsx", ".ts", ".js"],
   //   plugins: [new TsconfigPathsPlugin({ baseUrl: "./src" })],
