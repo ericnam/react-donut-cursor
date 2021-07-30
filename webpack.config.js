@@ -14,7 +14,11 @@ module.exports = {
       {
         test: /\.js?$/,
         use: "babel-loader",
-        // exclude: /node_modules/,
+        include: path.resolve(__dirname, "src"),
+      },
+      {
+        test: /\.ts?$/,
+        use: "dts-loader",
         include: path.resolve(__dirname, "src"),
       },
       // {

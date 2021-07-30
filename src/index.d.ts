@@ -1,6 +1,8 @@
-declare module DonutCursorProvider {
+import { ChangeCursor } from './index';
+type DonutCursorProviderProps = {
+  children: any,
+  configSettings: any
+}
 
-}
-declare module ChangeCursor {
-  
-}
+export function DonutCursorProvider({ children, configSettings }: DonutCursorProviderProps): JSX.Element;
+export function ChangeCursor (newState: string): void;
