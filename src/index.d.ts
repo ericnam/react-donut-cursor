@@ -1,4 +1,3 @@
-import { ChangeCursor } from './index';
 type DonutCursorProviderProps = {
   children: any,
   configSettings: any
