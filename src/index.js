@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
 }
 `;
 
-export const NamCursorProvider = ({ children, configSettings }) => {
+export const DonutCursorProvider = ({ children, configSettings }) => {
   const [cursorState, setCursorState] = useState(null);
   const config = { ...defaultConfig, ...configSettings };
 
