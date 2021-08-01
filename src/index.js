@@ -1,13 +1,25 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { createGlobalStyle } from "styled-components";
 
 import { defaultConfig } from "./defaultConfig";
 import { Cursor } from "./cursor";
 
+const GlobalStyle = createGlobalStyle`
+  * {
+    cursor: none;
+  }
+  a {
+    cursor: none;
+  }
+`;
+
 const CursorStore = createContext();
 
-export const DonutCursorProvider = ({ children, configSettings }) => {
-  const [cursorState, setCursorState] = useState(null);
+const DonutCursorProvider = ({ children, configSettings }) => {
+  const [cursorState, setCursorState] = useState();
   const config = { ...defaultConfig, ...configSettings };
+
+  console.log(config);
 
   return (
     <div
@@ -16,6 +28,7 @@ export const DonutCursorProvider = ({ children, configSettings }) => {
         height: "100%",
       }}
     >
+      <GlobalStyle />
       <CursorStore.Provider
         value={{ cursorState, setCursorState }}
         initialState={null}
@@ -27,6 +40,10 @@ export const DonutCursorProvider = ({ children, configSettings }) => {
   );
 };
 
-export const ChangeCursor = (newState) => {
+const ChangeCursor = (newState) => {
   useContext(CursorStore).setCursorState(newState);
 };
+
+exports.CursorStore = CursorStore;
+exports.DonutCursorProvider = DonutCursorProvider;
+exports.ChangeCursor = ChangeCursor;

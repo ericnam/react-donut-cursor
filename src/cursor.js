@@ -1,24 +1,31 @@
 import React, { useState, useEffect } from "react";
+import { CursorStore } from "./index";
 
 const CenterStyle = (mousePosition, props) => {
+  const centerDefault = props.center.default;
+
   return {
     position: "absolute",
     zIndex: 1000,
-    width: props.center.size,
-    height: props.center.size,
-    borderRadius: props.center.size,
+    width: `${centerDefault.size}px`,
+    height: `${centerDefault.size}px`,
+    borderRadius: `${centerDefault.size}px`,
+    backgroundColor: `${centerDefault.backgroundColor}`,
     left: mousePosition.x,
     top: mousePosition.y,
   };
 };
 
 const RingStyle = (mousePosition, props) => {
+  const ringDefault = props.ring.default;
+
   return {
     position: "absolute",
     zIndex: 1000,
-    width: props.ring.size,
-    height: props.ring.size,
-    borderRadius: props.ring.size,
+    width: `${ringDefault.size}px`,
+    height: `${ringDefault.size}px`,
+    borderRadius: `${ringDefault.size}px`,
+    border: `${ringDefault.color} 1px solid`,
     left: mousePosition.x,
     top: mousePosition.y,
   };
