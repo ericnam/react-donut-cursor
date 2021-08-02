@@ -1,49 +1,52 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 
 import { defaultConfig } from "./defaultConfig";
 import { Cursor } from "./cursor";
+import { GlobalStyle } from "./globalStyles";
 
-const GlobalStyle = createGlobalStyle`
-  * {
-    cursor: none;
-  }
-  a {
-    cursor: none;
-  }
+const CursorStore = createContext({
+  cursorState: "base",
+  setCursorState: () => {},
+});
+
+const CursorWrapper = styled.div`
+  width: 100%;
+  height: 100%;
 `;
 
-const CursorStore = createContext();
+const DonutCursorProvider = ({
+  children,
+  base,
+  hover,
+  hoverTagArr,
+  classImgArr,
+}) => {
+  const [cursorState, setCursorState] = useState("base");
 
-const DonutCursorProvider = ({ children, configSettings }) => {
-  const [cursorState, setCursorState] = useState();
-  const config = { ...defaultConfig, ...configSettings };
+  base = { ...defaultConfig.base, ...base };
+  hover = { ...defaultConfig.hover, ...hover };
 
-  console.log(config);
+  console.log(base);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-      }}
-    >
-      <GlobalStyle />
+    <CursorWrapper>
+      <GlobalStyle hover={hover} hoverTagArr={hoverTagArr} />
       <CursorStore.Provider
         value={{ cursorState, setCursorState }}
         initialState={null}
       >
-        <Cursor config={config} />
         {children}
+        <Cursor base={base} hover={hover} state={cursorState} />
       </CursorStore.Provider>
-    </div>
+    </CursorWrapper>
   );
 };
 
-const ChangeCursor = (newState) => {
-  useContext(CursorStore).setCursorState(newState);
+const CursorEventHandler = () => {
+  useContext(CursorStore);
 };
 
 exports.CursorStore = CursorStore;
 exports.DonutCursorProvider = DonutCursorProvider;
-exports.ChangeCursor = ChangeCursor;
+exports.CursorEventHandler = CursorEventHandler;

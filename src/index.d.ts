@@ -6,14 +6,22 @@ type DonutCursorProviderProps = {
 export function DonutCursorProvider({ children, configSettings }: DonutCursorProviderProps): JSX.Element;
 export function ChangeCursor(newState: string): void;
 
-export type ComponentProperty = {
+export type Center = {
   width: number,
   transition: number,
   color: string,
   img: any,
 }
-
+export type Ring = {
+  width: number,
+  transition: number,
+  border: string,
+  img: any,
+}
 export type DonutProperty = {
-  center: ComponentProperty,
-  ring: ComponentProperty
+  center: Center,
+  ring: Ring,
+  click: {
+    center: Center, ring: Ring
+  }
 }

@@ -4,13 +4,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _styledComponents = require("styled-components");
+var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _defaultConfig = require("./defaultConfig");
 
 var _cursor = require("./cursor");
 
+var _globalStyles = require("./globalStyles");
+
 var _templateObject;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -36,41 +40,48 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var GlobalStyle = (0, _styledComponents.createGlobalStyle)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  * {\n    cursor: none;\n  }\n  a {\n    cursor: none;\n  }\n"])));
-var CursorStore = /*#__PURE__*/(0, _react.createContext)();
+var CursorStore = /*#__PURE__*/(0, _react.createContext)({
+  cursorState: "base",
+  setCursorState: function setCursorState() {}
+});
+
+var CursorWrapper = _styledComponents["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  width: 100%;\n  height: 100%;\n"])));
 
 var DonutCursorProvider = function DonutCursorProvider(_ref) {
   var children = _ref.children,
-      configSettings = _ref.configSettings;
+      base = _ref.base,
+      hover = _ref.hover,
+      hoverTagArr = _ref.hoverTagArr,
+      classImgArr = _ref.classImgArr;
 
-  var _useState = (0, _react.useState)(),
+  var _useState = (0, _react.useState)("base"),
       _useState2 = _slicedToArray(_useState, 2),
       cursorState = _useState2[0],
       setCursorState = _useState2[1];
 
-  var config = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig), configSettings);
-
-  console.log(config);
-  return /*#__PURE__*/_react["default"].createElement("div", {
-    style: {
-      width: "100%",
-      height: "100%"
-    }
-  }, /*#__PURE__*/_react["default"].createElement(GlobalStyle, null), /*#__PURE__*/_react["default"].createElement(CursorStore.Provider, {
+  base = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig.base), base);
+  hover = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig.hover), hover);
+  console.log(base);
+  return /*#__PURE__*/_react["default"].createElement(CursorWrapper, null, /*#__PURE__*/_react["default"].createElement(_globalStyles.GlobalStyle, {
+    hover: hover,
+    hoverTagArr: hoverTagArr
+  }), /*#__PURE__*/_react["default"].createElement(CursorStore.Provider, {
     value: {
       cursorState: cursorState,
       setCursorState: setCursorState
     },
     initialState: null
-  }, /*#__PURE__*/_react["default"].createElement(_cursor.Cursor, {
-    config: config
-  }), children));
+  }, children, /*#__PURE__*/_react["default"].createElement(_cursor.Cursor, {
+    base: base,
+    hover: hover,
+    state: cursorState
+  })));
 };
 
-var ChangeCursor = function ChangeCursor(newState) {
-  (0, _react.useContext)(CursorStore).setCursorState(newState);
+var CursorEventHandler = function CursorEventHandler(newState) {
+  (0, _react.useContext)(CursorStore);
 };
 
 exports.CursorStore = CursorStore;
 exports.DonutCursorProvider = DonutCursorProvider;
-exports.ChangeCursor = ChangeCursor;
+exports.CursorEventHandler = CursorEventHandler;

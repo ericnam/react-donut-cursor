@@ -1,38 +1,46 @@
 import React, { useState, useEffect } from "react";
+
+import { Center } from "./components/center";
 import { CursorStore } from "./index";
 
-const CenterStyle = (mousePosition, props) => {
-  const centerDefault = props.center.default;
+const CenterStyle = (mousePosition, styles) => {
+  const centerBase = styles.base.center;
+  const centerBaseClick = styles.base.click.center;
+
+  const centerHover = styles.hover.center;
+  const centerHoverClick = styles.hover.click.center;
 
   return {
     position: "absolute",
     zIndex: 1000,
-    width: `${centerDefault.size}px`,
-    height: `${centerDefault.size}px`,
-    borderRadius: `${centerDefault.size}px`,
-    backgroundColor: `${centerDefault.backgroundColor}`,
+    width: `${centerBase.width}px`,
+    height: `${centerBase.width}px`,
+    borderRadius: `${centerBase.width}px`,
+    backgroundColor: `${centerBase.color}`,
     left: mousePosition.x,
     top: mousePosition.y,
   };
 };
 
-const RingStyle = (mousePosition, props) => {
-  const ringDefault = props.ring.default;
+const RingStyle = (mousePosition, styles) => {
+  const ringBase = styles.base.ring;
 
   return {
     position: "absolute",
     zIndex: 1000,
-    width: `${ringDefault.size}px`,
-    height: `${ringDefault.size}px`,
-    borderRadius: `${ringDefault.size}px`,
-    border: `${ringDefault.color} 1px solid`,
+    width: `${ringBase.width}px`,
+    height: `${ringBase.width}px`,
+    borderRadius: `${ringBase.width}px`,
+    border: `${ringBase.color} 1px solid`,
     left: mousePosition.x,
     top: mousePosition.y,
   };
 };
 
-export const Cursor = ({ config }) => {
+export const Cursor = ({ base, hover, state }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const styles = { base, hover };
 
   useEffect(() => {
     document.addEventListener("mousemove", mouseMoveEventListener, false);
@@ -47,8 +55,9 @@ export const Cursor = ({ config }) => {
 
   return (
     <div>
-      <div style={CenterStyle(mousePosition, config)}></div>
-      <div style={RingStyle(mousePosition, config)}></div>
+      <Center id="donut-center" x={mousePosition.x} y={mousePosition.y} styles={base.center} state={state} />
+      {/* <div style={CenterStyle(mousePosition, styles)}></div> */}
+      {/* <div style={RingStyle(mousePosition, styles)}></div> */}
     </div>
   );
 };
