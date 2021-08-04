@@ -58,15 +58,15 @@ export const Cursor = ({ base, hover }) => {
                 transition={centerStyles.lag}
             >
                 <Center styles={centerStyles}>
-                    <div
-                        style={{
-                            transform: 'translate(-50%,-50%)',
-                            position: 'absolute',
-                            pointerEvents: 'none',
-                        }}
-                    >
-                        {!!centerStyles.jsx ? centerStyles.jsx : null}
-                    </div>
+                    {!!centerStyles.jsx ? (
+                        <CenterContentWrapper>
+                            <CenterContentInnerWrapper
+                                height={centerStyles.jsx.props.style.height}
+                            >
+                                {centerStyles.jsx}
+                            </CenterContentInnerWrapper>
+                        </CenterContentWrapper>
+                    ) : null}
                 </Center>
             </CenterContainer>
             <RingContainer
@@ -78,4 +78,38 @@ export const Cursor = ({ base, hover }) => {
             </RingContainer>
         </div>
     );
+};
+
+const CenterContentWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    pointer-events: none;
+`;
+
+const CenterContentInnerWrapper = styled.div`
+    transform: translateY(50%);
+    margin: 0 auto;
+    margin-top: -${(props) => props.height};
+`;
+
+const DonutContentProps = (centerStyles, centerJsxElement) => {
+    let donutContentStyles = {
+        transform: 'translate(-50%,-50%)',
+        position: 'absolute',
+        height: centerStyles.width,
+        height: centerStyles.height,
+        pointerEvents: 'none',
+    };
+    if (
+        !!centerJsxElement &&
+        !!centerJsxElement.props &&
+        !!centerJsxElement.props.style
+    ) {
+        donutContentStyles = {
+            ...centerJsxElement.props.style,
+            ...donutContentStyles,
+        };
+    }
+    return { ...centerJsxElement.props, style: donutContentStyles };
 };

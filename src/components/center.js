@@ -16,6 +16,7 @@ export const Center = styled.div`
     position: absolute;
     pointer-events: none;
     transform: translate(-50%, -50%);
+    overflow: hidden;
 
     width: ${(props) => `${props.styles.width}`};
     height: ${(props) => `${props.styles.height}`};

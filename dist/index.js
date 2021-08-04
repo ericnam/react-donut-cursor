@@ -142,7 +142,6 @@ var DonutConsumer = function DonutConsumer(_ref2) {
           });
         },
         onMouseLeave: function onMouseLeave() {
-          console.log('mouse leave!');
           state.dispatch({
             type: 'base'
           });
@@ -158,9 +157,6 @@ var DonutConsumer = function DonutConsumer(_ref2) {
       return InsertDonutsIntoChildren(children, state, dispatch);
     }
   });
-}; // export const DonutCursorContext = () => {
-//     return useContext(CursorStore);
-// };
-
+};
 
 exports.DonutConsumer = DonutConsumer;

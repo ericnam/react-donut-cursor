@@ -97,7 +97,6 @@ export const DonutConsumer = ({ children }) => {
                     state.dispatch({ type: 'hover', class: userDefinedClass });
                 },
                 onMouseLeave: () => {
-                    console.log('mouse leave!');
                     state.dispatch({ type: 'base' });
                 },
             };
