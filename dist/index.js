@@ -2,6 +2,11 @@
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DonutConsumer = exports.DonutCursorProvider = exports.CursorStore = void 0;
+
 var _react = _interopRequireWildcard(require("react"));
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
@@ -20,12 +25,6 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -38,50 +37,130 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var CursorStore = /*#__PURE__*/(0, _react.createContext)({
-  cursorState: "base",
-  setCursorState: function setCursorState() {}
-});
+var CursorStore = /*#__PURE__*/(0, _react.createContext)();
+exports.CursorStore = CursorStore;
 
-var CursorWrapper = _styledComponents["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  width: 100%;\n  height: 100%;\n"])));
+var CursorWrapper = _styledComponents["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    width: 100%;\n    height: 100%;\n"])));
+
+var DonutReducer = function DonutReducer(state, action) {
+  switch (action.type) {
+    case 'base':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        state: action.type,
+        activeClass: ''
+      });
+
+    case 'hover':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        state: action.type,
+        activeClass: action["class"]
+      });
+
+    default:
+      break;
+  }
+};
+
+var InitialState = {
+  classNamesArr: [],
+  classConfigArr: {},
+  state: 'base',
+  //base, hover, click
+  activeClass: ''
+}; // classArr : [{className: "", img: <object> }]
 
 var DonutCursorProvider = function DonutCursorProvider(_ref) {
   var children = _ref.children,
       base = _ref.base,
       hover = _ref.hover,
-      hoverTagArr = _ref.hoverTagArr,
-      classImgArr = _ref.classImgArr;
+      classArr = _ref.classArr;
 
-  var _useState = (0, _react.useState)("base"),
-      _useState2 = _slicedToArray(_useState, 2),
-      cursorState = _useState2[0],
-      setCursorState = _useState2[1];
+  var _useReducer = (0, _react.useReducer)(DonutReducer, {
+    classNamesArr: classArr.map(function (c) {
+      return c.className;
+    }),
+    classConfigArr: classArr,
+    state: 'base',
+    activeClass: ''
+  }),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      state = _useReducer2[0],
+      dispatch = _useReducer2[1];
 
   base = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig.base), base);
   hover = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig.hover), hover);
-  console.log(base);
-  return /*#__PURE__*/_react["default"].createElement(CursorWrapper, null, /*#__PURE__*/_react["default"].createElement(_globalStyles.GlobalStyle, {
-    hover: hover,
-    hoverTagArr: hoverTagArr
-  }), /*#__PURE__*/_react["default"].createElement(CursorStore.Provider, {
+  return /*#__PURE__*/_react["default"].createElement(CursorWrapper, null, /*#__PURE__*/_react["default"].createElement(_globalStyles.GlobalStyle, null), /*#__PURE__*/_react["default"].createElement(CursorStore.Provider, {
     value: {
-      cursorState: cursorState,
-      setCursorState: setCursorState
+      state: state,
+      dispatch: dispatch
     },
-    initialState: null
+    initialState: state
   }, children, /*#__PURE__*/_react["default"].createElement(_cursor.Cursor, {
     base: base,
-    hover: hover,
-    state: cursorState
+    hover: hover
   })));
 };
 
-var CursorEventHandler = function CursorEventHandler(newState) {
-  (0, _react.useContext)(CursorStore);
-};
-
-exports.CursorStore = CursorStore;
 exports.DonutCursorProvider = DonutCursorProvider;
-exports.CursorEventHandler = CursorEventHandler;
+
+var DonutConsumer = function DonutConsumer(_ref2) {
+  var children = _ref2.children;
+
+  var InsertDonutsIntoChildren = function InsertDonutsIntoChildren(children, state, dispatch) {
+    return _react["default"].Children.map(children, function (child) {
+      if ( /*#__PURE__*/_react["default"].isValidElement(child)) {
+        return /*#__PURE__*/_react["default"].cloneElement(child, DonutElementProps(child, state), !!child.props && !!child.props.children ? InsertDonutsIntoChildren(child.props.children, state, dispatch) : child.props.children);
+      }
+
+      return child;
+    });
+  };
+
+  var DonutElementProps = function DonutElementProps(child, state) {
+    if (!!child.props && !!child.props.className && child.props.className.indexOf('donut-hover') >= 0) {
+      var userDefinedClass = '';
+      var classNames = child.props.className.split(' ');
+      classNames.every(function (ele, i) {
+        if (state.state.classNamesArr.indexOf(ele) >= 0) {
+          userDefinedClass = ele;
+          return;
+        }
+      });
+      return _objectSpread(_objectSpread({}, child.props), {}, {
+        onMouseEnter: function onMouseEnter() {
+          state.dispatch({
+            type: 'hover',
+            "class": userDefinedClass
+          });
+        },
+        onMouseLeave: function onMouseLeave() {
+          console.log('mouse leave!');
+          state.dispatch({
+            type: 'base'
+          });
+        }
+      });
+    } else {
+      return child.props;
+    }
+  };
+
+  return /*#__PURE__*/_react["default"].createElement(CursorStore.Consumer, null, function (state, dispatch) {
+    {
+      return InsertDonutsIntoChildren(children, state, dispatch);
+    }
+  });
+}; // export const DonutCursorContext = () => {
+//     return useContext(CursorStore);
+// };
+
+
+exports.DonutConsumer = DonutConsumer;

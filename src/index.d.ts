@@ -1,27 +1,41 @@
 type DonutCursorProviderProps = {
-  children: any,
-  configSettings: any
+  children: React.ReactNode,
+  base: DonutConfig,
+  hover: DonutConfig,
+  classArr: DonutCustomClassArray
 }
 
-export function DonutCursorProvider({ children, configSettings }: DonutCursorProviderProps): JSX.Element;
-export function ChangeCursor(newState: string): void;
+export function DonutCursorProvider({ children, base, hover, classArr }: DonutCursorProviderProps): JSX.Element;
+export function DonutConsumer({ children }: { children: React.ReactNode }): JSX.Element;
 
 export type Center = {
-  width: number,
-  transition: number,
-  color: string,
-  img: any,
+  width: string,
+  height: string,
+  transition: string,
+  lag: string,
+  backgroundColor: string,
+  display: string,
+  jsx: any,
 }
 export type Ring = {
-  width: number,
-  transition: number,
-  border: string,
-  img: any,
+  width: string,
+  height: string,
+  transition: string,
+  lag: string,
+  borderWidth: string,
+  borderColor: string,
+  borderStyle: string,
+  display: string,
 }
-export type DonutProperty = {
+export type DonutConfig = {
   center: Center,
   ring: Ring,
   click: {
     center: Center, ring: Ring
   }
 }
+
+export type DonutCustomClassArray = {
+  className: string,
+  config: DonutProperty
+}[];

@@ -1,63 +1,81 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from 'react';
+import styled from 'styled-components';
 
-import { Center } from "./components/center";
-import { CursorStore } from "./index";
+import { Center, CenterContainer } from './components/center';
+import { Ring, RingContainer } from './components/ring';
+import { CursorStore } from './index';
 
-const CenterStyle = (mousePosition, styles) => {
-  const centerBase = styles.base.center;
-  const centerBaseClick = styles.base.click.center;
+export const Cursor = ({ base, hover }) => {
+    const [clicked, setClicked] = useState(false);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const { state } = useContext(CursorStore);
 
-  const centerHover = styles.hover.center;
-  const centerHoverClick = styles.hover.click.center;
+    let centerStyles = { ...base.center };
+    let ringStyles = { ...base.ring };
 
-  return {
-    position: "absolute",
-    zIndex: 1000,
-    width: `${centerBase.width}px`,
-    height: `${centerBase.width}px`,
-    borderRadius: `${centerBase.width}px`,
-    backgroundColor: `${centerBase.color}`,
-    left: mousePosition.x,
-    top: mousePosition.y,
-  };
-};
+    if (!!state) {
+        if (state.state === 'hover') {
+            centerStyles = { ...centerStyles, ...hover.center };
+            ringStyles = { ...ringStyles, ...hover.ring };
+        }
+        if (!!state.activeClass) {
+            let classConfig = state.classConfigArr[state.activeClass];
+            centerStyles = { ...centerStyles, ...classConfig.center };
+            ringStyles = { ...ringStyles, ...classConfig.ring };
+        }
+    }
 
-const RingStyle = (mousePosition, styles) => {
-  const ringBase = styles.base.ring;
+    useEffect(() => {
+        document.addEventListener('mousemove', mouseMoveEventListener, false);
+        document.addEventListener('click', mouseClickEventListener, false);
 
-  return {
-    position: "absolute",
-    zIndex: 1000,
-    width: `${ringBase.width}px`,
-    height: `${ringBase.width}px`,
-    borderRadius: `${ringBase.width}px`,
-    border: `${ringBase.color} 1px solid`,
-    left: mousePosition.x,
-    top: mousePosition.y,
-  };
-};
+        return () => {
+            document.removeEventListener(
+                'mousemove',
+                mouseMoveEventListener,
+                false
+            );
+            document.removeEventListener(
+                'click',
+                mouseClickEventListener,
+                false
+            );
+        };
+    });
 
-export const Cursor = ({ base, hover, state }) => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  const styles = { base, hover };
-
-  useEffect(() => {
-    document.addEventListener("mousemove", mouseMoveEventListener, false);
-    return () => {
-      document.removeEventListener("mousemove", mouseMoveEventListener, false);
+    const mouseMoveEventListener = (e) => {
+        setMousePosition({ x: e.x, y: e.y });
     };
-  });
+    const mouseClickEventListener = (e) => {
+        setClicked(true);
+    };
 
-  const mouseMoveEventListener = (e) => {
-    setMousePosition({ x: e.x, y: e.y });
-  };
-
-  return (
-    <div>
-      <Center id="donut-center" x={mousePosition.x} y={mousePosition.y} styles={base.center} state={state} />
-      {/* <div style={CenterStyle(mousePosition, styles)}></div> */}
-      {/* <div style={RingStyle(mousePosition, styles)}></div> */}
-    </div>
-  );
+    return (
+        <div>
+            <CenterContainer
+                x={mousePosition.x}
+                y={mousePosition.y}
+                transition={centerStyles.lag}
+            >
+                <Center styles={centerStyles}>
+                    <div
+                        style={{
+                            transform: 'translate(-50%,-50%)',
+                            position: 'absolute',
+                            pointerEvents: 'none',
+                        }}
+                    >
+                        {!!centerStyles.jsx ? centerStyles.jsx : null}
+                    </div>
+                </Center>
+            </CenterContainer>
+            <RingContainer
+                x={mousePosition.x}
+                y={mousePosition.y}
+                transition={ringStyles.lag}
+            >
+                <Ring styles={ringStyles} />
+            </RingContainer>
+        </div>
+    );
 };

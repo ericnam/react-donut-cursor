@@ -24,15 +24,15 @@ const DisablePointers = (arr) => {
 }
 
 export const GlobalStyle = createGlobalStyle`
-  * {
+  *, a, button {
     cursor: none;
   }
-  ${(props) => {
-    let globalHoverStyles = DisablePointers(props.hoverTagArr);
-    return globalHoverStyles;
-  }}
 `;
 
+// ${(props) => {
+//   let globalHoverStyles = DisablePointers(props.hoverTagArr);
+//   return globalHoverStyles;
+// }}
 // ${(props) => {
 //   let globalHoverStyles = PopulateHoverStyles(props.hoverTagArr, props.hover);
 //   return globalHoverStyles;
