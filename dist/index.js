@@ -11,13 +11,13 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
+var _reactDeviceDetect = require("react-device-detect");
+
 var _defaultConfig = require("./defaultConfig");
 
 var _cursor = require("./cursor");
 
 var _globalStyles = require("./globalStyles");
-
-var _templateObject;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -43,12 +43,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
 var CursorStore = /*#__PURE__*/(0, _react.createContext)();
 exports.CursorStore = CursorStore;
-
-var CursorWrapper = _styledComponents["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    width: 100%;\n    height: 100%;\n"])));
 
 var DonutReducer = function DonutReducer(state, action) {
   switch (action.type) {
@@ -69,14 +65,6 @@ var DonutReducer = function DonutReducer(state, action) {
   }
 };
 
-var InitialState = {
-  classNamesArr: [],
-  classConfigArr: {},
-  state: 'base',
-  //base, hover, click
-  activeClass: ''
-}; // classArr : [{className: "", img: <object> }]
-
 var DonutCursorProvider = function DonutCursorProvider(_ref) {
   var children = _ref.children,
       base = _ref.base,
@@ -84,9 +72,7 @@ var DonutCursorProvider = function DonutCursorProvider(_ref) {
       classArr = _ref.classArr;
 
   var _useReducer = (0, _react.useReducer)(DonutReducer, {
-    classNamesArr: classArr.map(function (c) {
-      return c.className;
-    }),
+    classNamesArr: Object.keys(classArr),
     classConfigArr: classArr,
     state: 'base',
     activeClass: ''
@@ -97,7 +83,27 @@ var DonutCursorProvider = function DonutCursorProvider(_ref) {
 
   base = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig.base), base);
   hover = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig.hover), hover);
-  return /*#__PURE__*/_react["default"].createElement(CursorWrapper, null, /*#__PURE__*/_react["default"].createElement(_globalStyles.GlobalStyle, null), /*#__PURE__*/_react["default"].createElement(CursorStore.Provider, {
+
+  if (_reactDeviceDetect.isMobile) {
+    base = _objectSpread(_objectSpread({}, base), {}, {
+      center: _objectSpread(_objectSpread({}, base.center), {}, {
+        display: 'none'
+      }),
+      ring: _objectSpread(_objectSpread({}, base.ring), {}, {
+        display: 'none'
+      })
+    });
+    hover = _objectSpread(_objectSpread({}, hover), {}, {
+      center: _objectSpread(_objectSpread({}, hover.center), {}, {
+        display: 'none'
+      }),
+      ring: _objectSpread(_objectSpread({}, hover.ring), {}, {
+        display: 'none'
+      })
+    });
+  }
+
+  return /*#__PURE__*/_react["default"].createElement(_globalStyles.CursorWrapper, null, /*#__PURE__*/_react["default"].createElement(_globalStyles.GlobalStyle, null), /*#__PURE__*/_react["default"].createElement(CursorStore.Provider, {
     value: {
       state: state,
       dispatch: dispatch
@@ -128,8 +134,8 @@ var DonutConsumer = function DonutConsumer(_ref2) {
     if (!!child.props && !!child.props.className && child.props.className.indexOf('donut-hover') >= 0) {
       var userDefinedClass = '';
       var classNames = child.props.className.split(' ');
-      classNames.every(function (ele, i) {
-        if (state.state.classNamesArr.indexOf(ele) >= 0) {
+      classNames.forEach(function (ele, i) {
+        if (state.state.classNamesArr.includes(ele)) {
           userDefinedClass = ele;
           return;
         }
@@ -154,7 +160,7 @@ var DonutConsumer = function DonutConsumer(_ref2) {
 
   return /*#__PURE__*/_react["default"].createElement(CursorStore.Consumer, null, function (state, dispatch) {
     {
-      return InsertDonutsIntoChildren(children, state, dispatch);
+      return _reactDeviceDetect.isBrowser ? InsertDonutsIntoChildren(children, state, dispatch) : children;
     }
   });
 };

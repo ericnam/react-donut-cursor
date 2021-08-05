@@ -1,16 +1,12 @@
 import React, { createContext, useContext, useState, useReducer } from 'react';
 import styled from 'styled-components';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 import { defaultConfig } from './defaultConfig';
 import { Cursor } from './cursor';
-import { GlobalStyle } from './globalStyles';
+import { GlobalStyle, CursorWrapper } from './globalStyles';
 
 export const CursorStore = createContext();
-
-const CursorWrapper = styled.div`
-    width: 100%;
-    height: 100%;
-`;
 
 const DonutReducer = (state, action) => {
     switch (action.type) {
@@ -22,17 +18,10 @@ const DonutReducer = (state, action) => {
             break;
     }
 };
-const InitialState = {
-    classNamesArr: [],
-    classConfigArr: {},
-    state: 'base', //base, hover, click
-    activeClass: '',
-};
 
-// classArr : [{className: "", img: <object> }]
 export const DonutCursorProvider = ({ children, base, hover, classArr }) => {
     const [state, dispatch] = useReducer(DonutReducer, {
-        classNamesArr: classArr.map((c) => c.className),
+        classNamesArr: Object.keys(classArr),
         classConfigArr: classArr,
         state: 'base',
         activeClass: '',
@@ -40,6 +29,11 @@ export const DonutCursorProvider = ({ children, base, hover, classArr }) => {
 
     base = { ...defaultConfig.base, ...base };
     hover = { ...defaultConfig.hover, ...hover };
+
+    if (isMobile) {
+        base = { ...base, center: { ...base.center, display: 'none' }, ring: { ...base.ring, display: 'none' } };
+        hover = { ...hover, center: { ...hover.center, display: 'none' }, ring: { ...hover.ring, display: 'none' } };
+    }
 
     return (
         <CursorWrapper>
@@ -84,8 +78,9 @@ export const DonutConsumer = ({ children }) => {
         ) {
             let userDefinedClass = '';
             const classNames = child.props.className.split(' ');
-            classNames.every((ele, i) => {
-                if (state.state.classNamesArr.indexOf(ele) >= 0) {
+
+            classNames.forEach((ele, i) => {
+                if (state.state.classNamesArr.includes(ele)) {
                     userDefinedClass = ele;
                     return;
                 }
@@ -109,7 +104,9 @@ export const DonutConsumer = ({ children }) => {
         <CursorStore.Consumer>
             {(state, dispatch) => {
                 {
-                    return InsertDonutsIntoChildren(children, state, dispatch);
+                    return isBrowser
+                        ? InsertDonutsIntoChildren(children, state, dispatch)
+                        : children;
                 }
             }}
         </CursorStore.Consumer>
