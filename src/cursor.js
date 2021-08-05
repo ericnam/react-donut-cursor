@@ -8,6 +8,7 @@ import { CursorStore } from './index';
 export const Cursor = ({ base, hover }) => {
     const [clicked, setClicked] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [scrollY, setScrollY] = useState(0);
     const { state } = useContext(CursorStore);
 
     let centerStyles = { ...base.center };
@@ -27,12 +28,18 @@ export const Cursor = ({ base, hover }) => {
 
     useEffect(() => {
         document.addEventListener('mousemove', mouseMoveEventListener, false);
+        document.addEventListener('scroll', mouseScrollEventListener, false);
         document.addEventListener('click', mouseClickEventListener, false);
 
         return () => {
             document.removeEventListener(
                 'mousemove',
                 mouseMoveEventListener,
+                false
+            );
+            document.removeEventListener(
+                'scroll',
+                mouseScrollEventListener,
                 false
             );
             document.removeEventListener(
@@ -44,7 +51,11 @@ export const Cursor = ({ base, hover }) => {
     });
 
     const mouseMoveEventListener = (e) => {
-        setMousePosition({ x: e.x, y: e.y });
+        setMousePosition({ x: e.x, y: e.y + scrollY });
+    };
+    const mouseScrollEventListener = (e) => {
+        let scrollTop = e.srcElement.scrollingElement.scrollTop;
+        setScrollY(scrollTop);
     };
     const mouseClickEventListener = (e) => {
         setClicked(true);

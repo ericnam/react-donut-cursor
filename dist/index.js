@@ -83,25 +83,13 @@ var DonutCursorProvider = function DonutCursorProvider(_ref) {
 
   base = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig.base), base);
   hover = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig.hover), hover);
-
-  if (_reactDeviceDetect.isMobile) {
-    base = _objectSpread(_objectSpread({}, base), {}, {
-      center: _objectSpread(_objectSpread({}, base.center), {}, {
-        display: 'none'
-      }),
-      ring: _objectSpread(_objectSpread({}, base.ring), {}, {
-        display: 'none'
-      })
-    });
-    hover = _objectSpread(_objectSpread({}, hover), {}, {
-      center: _objectSpread(_objectSpread({}, hover.center), {}, {
-        display: 'none'
-      }),
-      ring: _objectSpread(_objectSpread({}, hover.ring), {}, {
-        display: 'none'
-      })
-    });
-  }
+  var cursor = _reactDeviceDetect.isMobile ? null : /*#__PURE__*/_react["default"].createElement(_cursor.Cursor, {
+    base: base,
+    hover: hover
+  }); // if (isMobile) {
+  //     base = { ...base, center: { ...base.center, display: 'none' }, ring: { ...base.ring, display: 'none' } };
+  //     hover = { ...hover, center: { ...hover.center, display: 'none' }, ring: { ...hover.ring, display: 'none' } };
+  // }
 
   return /*#__PURE__*/_react["default"].createElement(_globalStyles.CursorWrapper, null, /*#__PURE__*/_react["default"].createElement(_globalStyles.GlobalStyle, null), /*#__PURE__*/_react["default"].createElement(CursorStore.Provider, {
     value: {
@@ -109,10 +97,7 @@ var DonutCursorProvider = function DonutCursorProvider(_ref) {
       dispatch: dispatch
     },
     initialState: state
-  }, children, /*#__PURE__*/_react["default"].createElement(_cursor.Cursor, {
-    base: base,
-    hover: hover
-  })));
+  }, children, cursor));
 };
 
 exports.DonutCursorProvider = DonutCursorProvider;
