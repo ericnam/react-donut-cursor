@@ -9,8 +9,6 @@ exports.DonutConsumer = exports.DonutCursorProvider = exports.CursorStore = void
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _styledComponents = _interopRequireDefault(require("styled-components"));
-
 var _reactDeviceDetect = require("react-device-detect");
 
 var _defaultConfig = require("./defaultConfig");
@@ -18,8 +16,6 @@ var _defaultConfig = require("./defaultConfig");
 var _cursor = require("./cursor");
 
 var _globalStyles = require("./globalStyles");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -86,11 +82,7 @@ var DonutCursorProvider = function DonutCursorProvider(_ref) {
   var cursor = _reactDeviceDetect.isMobile ? null : /*#__PURE__*/_react["default"].createElement(_cursor.Cursor, {
     base: base,
     hover: hover
-  }); // if (isMobile) {
-  //     base = { ...base, center: { ...base.center, display: 'none' }, ring: { ...base.ring, display: 'none' } };
-  //     hover = { ...hover, center: { ...hover.center, display: 'none' }, ring: { ...hover.ring, display: 'none' } };
-  // }
-
+  });
   return /*#__PURE__*/_react["default"].createElement(_globalStyles.CursorWrapper, null, /*#__PURE__*/_react["default"].createElement(_globalStyles.GlobalStyle, null), /*#__PURE__*/_react["default"].createElement(CursorStore.Provider, {
     value: {
       state: state,

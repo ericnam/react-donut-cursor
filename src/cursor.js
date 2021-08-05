@@ -11,6 +11,9 @@ export const Cursor = ({ base, hover }) => {
     const [scrollY, setScrollY] = useState(0);
     const { state } = useContext(CursorStore);
 
+    base = clicked ? { ...base, ...base.click } : base;
+    hover = clicked ? { ...hover, ...hover.click } : hover;
+
     let centerStyles = { ...base.center };
     let ringStyles = { ...base.ring };
 
@@ -29,7 +32,8 @@ export const Cursor = ({ base, hover }) => {
     useEffect(() => {
         document.addEventListener('mousemove', mouseMoveEventListener, false);
         document.addEventListener('scroll', mouseScrollEventListener, false);
-        document.addEventListener('click', mouseClickEventListener, false);
+        document.addEventListener('mousedown', mouseDownEventListener, false);
+        document.addEventListener('mouseup', mouseUpEventListener, false);
 
         return () => {
             document.removeEventListener(
@@ -43,8 +47,13 @@ export const Cursor = ({ base, hover }) => {
                 false
             );
             document.removeEventListener(
-                'click',
-                mouseClickEventListener,
+                'mousedown',
+                mouseDownEventListener,
+                false
+            );
+            document.removeEventListener(
+                'mouseup',
+                mouseUpEventListener,
                 false
             );
         };
@@ -57,8 +66,11 @@ export const Cursor = ({ base, hover }) => {
         let scrollTop = e.srcElement.scrollingElement.scrollTop;
         setScrollY(scrollTop);
     };
-    const mouseClickEventListener = (e) => {
+    const mouseDownEventListener = (e) => {
         setClicked(true);
+    };
+    const mouseUpEventListener = (e) => {
+        setClicked(false);
     };
 
     return (
@@ -103,24 +115,3 @@ const CenterContentInnerWrapper = styled.div`
     margin: 0 auto;
     margin-top: -${(props) => props.height};
 `;
-
-const DonutContentProps = (centerStyles, centerJsxElement) => {
-    let donutContentStyles = {
-        transform: 'translate(-50%,-50%)',
-        position: 'absolute',
-        height: centerStyles.width,
-        height: centerStyles.height,
-        pointerEvents: 'none',
-    };
-    if (
-        !!centerJsxElement &&
-        !!centerJsxElement.props &&
-        !!centerJsxElement.props.style
-    ) {
-        donutContentStyles = {
-            ...centerJsxElement.props.style,
-            ...donutContentStyles,
-        };
-    }
-    return { ...centerJsxElement.props, style: donutContentStyles };
-};
