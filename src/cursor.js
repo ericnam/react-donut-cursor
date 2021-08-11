@@ -119,7 +119,6 @@ const GetCursorConfiguration = (
     baseInput,
     hoverInput
 ) => {
-    let cursorSetting;
     let defaultSetting;
     let userSetting;
 
@@ -151,11 +150,8 @@ const GetCursorConfiguration = (
                 !!!userSetting.click ||
                 !userSetting.click.hasOwnProperty('ring')
             ) {
-                console.log('ring is missing');
                 if (!!userSetting.ring) {
-                    console.log('ring is found');
                     clickSetting = { ...clickSetting, ring: userSetting.ring };
-                    console.log(clickSetting);
                 }
             }
 
