@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Center, CenterContainer } from './components/center';
 import { Ring, RingContainer } from './components/ring';
 import { CursorStore } from './index';
+import { defaultConfig } from './defaultConfig';
 
 export const Cursor = ({ base, hover }) => {
     const [clicked, setClicked] = useState(false);
@@ -11,23 +12,17 @@ export const Cursor = ({ base, hover }) => {
     const [scrollY, setScrollY] = useState(0);
     const { state } = useContext(CursorStore);
 
-    base = clicked ? { ...base, ...base.click } : base;
-    hover = clicked ? { ...hover, ...hover.click } : hover;
+    const cursorStyle = GetCursorConfiguration(
+        state.state,
+        clicked,
+        state.activeClass,
+        state.classConfigArr,
+        base,
+        hover
+    );
 
-    let centerStyles = { ...base.center };
-    let ringStyles = { ...base.ring };
-
-    if (!!state) {
-        if (state.state === 'hover') {
-            centerStyles = { ...centerStyles, ...hover.center };
-            ringStyles = { ...ringStyles, ...hover.ring };
-        }
-        if (!!state.activeClass) {
-            let classConfig = state.classConfigArr[state.activeClass];
-            centerStyles = { ...centerStyles, ...classConfig.center };
-            ringStyles = { ...ringStyles, ...classConfig.ring };
-        }
-    }
+    const centerStyles = cursorStyle.center;
+    const ringStyles = cursorStyle.ring;
 
     useEffect(() => {
         document.addEventListener('mousemove', mouseMoveEventListener, false);
@@ -115,3 +110,58 @@ const CenterContentInnerWrapper = styled.div`
     margin: 0 auto;
     margin-top: -${(props) => props.height};
 `;
+
+const GetCursorConfiguration = (
+    cursorState,
+    cursorClicked,
+    activeClass,
+    classConfigArr,
+    baseInput,
+    hoverInput
+) => {
+    let cursorSetting;
+    let defaultSetting;
+    let userSetting;
+
+    if (!!cursorState && cursorState === 'hover') {
+        defaultSetting = defaultConfig.hover;
+        userSetting = hoverInput;
+
+        if (!!activeClass) {
+            userSetting = { ...userSetting, ...classConfigArr[activeClass] };
+        }
+    } else {
+        defaultSetting = defaultConfig.base;
+        userSetting = baseInput;
+    }
+
+    if (cursorClicked) {
+        defaultSetting = defaultSetting.click;
+
+        var clickSetting = { ...userSetting.click };
+
+        if (
+            !!!userSetting.click ||
+            !userSetting.click.hasOwnProperty('center')
+        ) {
+            if (!!userSetting.center) {
+                clickSetting = { ...clickSetting, center: userSetting.center };
+            }
+            if (
+                !!!userSetting.click ||
+                !userSetting.click.hasOwnProperty('ring')
+            ) {
+                console.log('ring is missing');
+                if (!!userSetting.ring) {
+                    console.log('ring is found');
+                    clickSetting = { ...clickSetting, ring: userSetting.ring };
+                    console.log(clickSetting);
+                }
+            }
+
+            userSetting = { ...clickSetting };
+        }
+
+        return !!userSetting ? userSetting : defaultSetting;
+    }
+};

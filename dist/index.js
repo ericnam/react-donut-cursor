@@ -11,8 +11,6 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _reactDeviceDetect = require("react-device-detect");
 
-var _defaultConfig = require("./defaultConfig");
-
 var _cursor = require("./cursor");
 
 var _globalStyles = require("./globalStyles");
@@ -75,10 +73,10 @@ var DonutCursorProvider = function DonutCursorProvider(_ref) {
   }),
       _useReducer2 = _slicedToArray(_useReducer, 2),
       state = _useReducer2[0],
-      dispatch = _useReducer2[1];
+      dispatch = _useReducer2[1]; // base = { ...defaultConfig.base, ...base };
+  // hover = { ...defaultConfig.hover, ...hover };
 
-  base = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig.base), base);
-  hover = _objectSpread(_objectSpread({}, _defaultConfig.defaultConfig.hover), hover);
+
   var cursor = _reactDeviceDetect.isMobile ? null : /*#__PURE__*/_react["default"].createElement(_cursor.Cursor, {
     base: base,
     hover: hover

@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react';
 import { isBrowser, isMobile } from 'react-device-detect';
 
-import { defaultConfig } from './defaultConfig';
+// import { defaultConfig } from './defaultConfig';
 import { Cursor } from './cursor';
 import { GlobalStyle, CursorWrapper } from './globalStyles';
 
@@ -26,8 +26,8 @@ export const DonutCursorProvider = ({ children, base, hover, classArr }) => {
         activeClass: '',
     });
 
-    base = { ...defaultConfig.base, ...base };
-    hover = { ...defaultConfig.hover, ...hover };
+    // base = { ...defaultConfig.base, ...base };
+    // hover = { ...defaultConfig.hover, ...hover };
 
     let cursor = isMobile ? null : <Cursor base={base} hover={hover} />;
 
