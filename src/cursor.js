@@ -5,6 +5,10 @@ import { Center, CenterContainer } from './components/center';
 import { Ring, RingContainer } from './components/ring';
 import { CursorStore } from './index';
 
+/**
+ * Main cursor component
+ * @returns
+ */
 export const Cursor = () => {
     const [clicked, setClicked] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -110,6 +114,16 @@ const CenterContentInnerWrapper = styled.div`
     margin-top: -${(props) => props.height};
 `;
 
+/**
+ * Get the Ring and Center styles based on current cursor's state
+ * @param {*} base
+ * @param {*} hover
+ * @param {*} cursorState
+ * @param {*} clicked
+ * @param {*} activeClass
+ * @param {*} classArr
+ * @returns
+ */
 const GetCursorStateStyle = (
     base,
     hover,

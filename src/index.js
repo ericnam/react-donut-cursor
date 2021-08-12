@@ -8,6 +8,13 @@ import { defaultConfig } from './defaultConfig';
 
 export const CursorStore = createContext();
 
+/**
+ * Reducer for cursor state updates
+ * action { type: string, class: string }
+ * @param {*} state 
+ * @param {*} action 
+ * @returns 
+ */
 const DonutReducer = (state, action) => {
     switch (action.type) {
         case 'base':
@@ -23,6 +30,11 @@ const DonutReducer = (state, action) => {
     }
 };
 
+/**
+ * Main wrapper/provider for the donut cursor
+ * @param {*} param0 
+ * @returns 
+ */
 export const DonutCursorProvider = ({ children, base, hover, classArr }) => {
     // Validate user (base, hover, class-specific) settings
     let userInput = ValidateUserInput(
@@ -56,6 +68,11 @@ export const DonutCursorProvider = ({ children, base, hover, classArr }) => {
     );
 };
 
+/**
+ * Donut consumer wrapper for components that require donut state changes
+ * @param {*} param0 
+ * @returns 
+ */
 export const DonutConsumer = ({ children }) => {
     const InsertDonutsIntoChildren = (children, state, dispatch) => {
         return React.Children.map(children, (child) => {
