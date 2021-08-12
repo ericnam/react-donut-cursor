@@ -2,9 +2,6 @@ const ValidateUserInput = (base, hover, defaultBase, defaultHover) => {
     base = ValidateDonutConfig(base, defaultBase);
     hover = ValidateDonutConfig(hover, defaultHover);
 
-    console.log(base);
-    console.log(hover);
-
     return { base, hover };
 };
 
@@ -12,8 +9,6 @@ const ValidateClassArray = (classArray, defaultHover) => {
     Object.keys(classArray).map((key) => {
         classArray[key] = ValidateDonutConfig(classArray[key], defaultHover);
     });
-
-    console.log(classArray);
 
     return classArray;
 };
