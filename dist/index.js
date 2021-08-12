@@ -42,6 +42,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var CursorStore = /*#__PURE__*/(0, _react.createContext)();
+/**
+ * Reducer for cursor state updates
+ * action { type: string, class: string }
+ * @param {*} state 
+ * @param {*} action 
+ * @returns 
+ */
+
 exports.CursorStore = CursorStore;
 
 var DonutReducer = function DonutReducer(state, action) {
@@ -62,6 +70,12 @@ var DonutReducer = function DonutReducer(state, action) {
       break;
   }
 };
+/**
+ * Main wrapper/provider for the donut cursor
+ * @param {*} param0 
+ * @returns 
+ */
+
 
 var DonutCursorProvider = function DonutCursorProvider(_ref) {
   var children = _ref.children,
@@ -92,6 +106,12 @@ var DonutCursorProvider = function DonutCursorProvider(_ref) {
     initialState: state
   }, children, _reactDeviceDetect.isMobile ? null : /*#__PURE__*/_react["default"].createElement(_cursor.Cursor, null)));
 };
+/**
+ * Donut consumer wrapper for components that require donut state changes
+ * @param {*} param0 
+ * @returns 
+ */
+
 
 exports.DonutCursorProvider = DonutCursorProvider;
 
