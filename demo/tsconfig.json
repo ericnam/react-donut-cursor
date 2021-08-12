@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "declaration": false, //can we do this for only certain files
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@style/*": [ "style/*" ],
+      "@components/*": [ "components/*" ],
+      "@assets/*": [ "style/assets/*" ],
+      "@donut": [ "cursorConfigs/index.tsx" ],
+      "@consts/*": [ "consts/*" ],
+      // "@hooks/*": [ "hooks/*" ],
+    }
+  },
+  "include": [
+    "src/**/*",
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

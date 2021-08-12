@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: 'Dunkin';
+        src: url('./assets/fonts/Dunkin-Sans.otf') format('opentype');
+        font-weight: normal;
+    }
+    @font-face {
+        font-family: 'Dunkin';
+        src: url('./assets/fonts/Dunkin-Sans-Bold.otf') format('opentype');
+        font-weight: 700;
+    }
+}
+
+.rainbow-bg {
+    animation: rainbow-bg 1s linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes rainbow-bg {
+    100%,
+    0% {
+        background-color: rgba(255, 0, 0, 0.9);
+    }
+    8% {
+        background-color: rgba(255, 127, 0, 0.9);
+    }
+    16% {
+        background-color: rgba(255, 255, 0, 0.9);
+    }
+    25% {
+        background-color: rgba(127, 255, 0, 0.9);
+    }
+    33% {
+        background-color: rgba(0, 255, 0, 0.9);
+    }
+    41% {
+        background-color: rgba(0, 255, 127, 0.9);
+    }
+    50% {
+        background-color: rgba(0, 255, 255, 0.9);
+    }
+    58% {
+        background-color: rgba(0, 127, 255, 0.9);
+    }
+    66% {
+        background-color: rgba(0, 0, 255, 0.9);
+    }
+    75% {
+        background-color: rgba(127, 0, 255, 0.9);
+    }
+    83% {
+        background-color: rgba(255, 0, 255, 0.9);
+    }
+    91% {
+        background-color: rgba(255, 0, 127, 0.9);
+    }
+}
