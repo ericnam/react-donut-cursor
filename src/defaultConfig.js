@@ -1,60 +1,75 @@
-const defaultBase = {
-  center: {
-    width: 10,
-    transition: 0,
-    color: "black",
-    img: null,
-  },
-  ring: {
-    width: 30,
-    transition: 100,
-    border: "black 1px solid",
-    img: null,
-  },
-  click: {
+const BaseConfig = {
     center: {
-      width: 8,
-      transition: 10,
-      color: "black",
-      img: null,
+        width: '4px',
+        height: '4px',
+        transition: '300ms',
+        lag: '0ms',
+        backgroundColor: 'black',
+        jsx: null,
     },
     ring: {
-      width: 25,
-      transition: 10,
-      border: "black 1px solid",
-      img: null,
+        width: '45px',
+        height: '45px',
+        transition: '300ms',
+        lag: '50ms',
+        borderColor: 'gray',
+        borderWidth: '2px',
+        borderStyle: 'solid',
     },
-  },
+    click: {
+        center: {
+            width: '4px',
+            height: '4px',
+            transition: '300ms',
+            lag: '0ms',
+            backgroundColor: 'black',
+            jsx: null,
+        },
+        ring: {
+            width: '25px',
+            height: '25px',
+            transition: '50ms',
+            display: 'block',
+            borderColor: 'gray',
+            borderWidth: '2px',
+            borderStyle: 'solid',
+        },
+    },
 };
-const defaultHover = {
-  center: {
-    width: 15,
-    transition: 0,
-    color: "black",
-    img: null,
-  },
-  ring: {
-    width: 50,
-    transition: 80,
-    border: "black",
-    img: null,
-  },
-  click: {
+const HoverConfig = {
     center: {
-      width: 10,
-      transition: 10,
-      color: "black",
-      img: null,
+        width: '15px',
+        height: '15px',
+        transition: '150ms',
+        backgroundColor: 'black',
     },
     ring: {
-      width: 40,
-      transition: 10,
-      border: "black 1px solid",
-      img: null,
+        width: '30px',
+        height: '30px',
+        transition: '150ms',
+        borderColor: 'gray',
+        borderWidth: '2px',
+        borderStyle: 'dotted',
     },
-  },
+    click: {
+        center: {
+            width: '10px',
+            height: '10px',
+            transition: '150ms',
+            backgroundColor: 'black',
+        },
+        ring: {
+            width: '45px',
+            height: '45px',
+            transition: '150ms',
+            borderColor: 'gray',
+            borderWidth: '2px',
+            borderStyle: 'solid',
+        },
+    },
 };
+
 export const defaultConfig = {
-  base: defaultBase,
-  hover: defaultHover,
+    base: BaseConfig,
+    hover: HoverConfig,
 };

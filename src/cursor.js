@@ -4,21 +4,20 @@ import styled from 'styled-components';
 import { Center, CenterContainer } from './components/center';
 import { Ring, RingContainer } from './components/ring';
 import { CursorStore } from './index';
-import { defaultConfig } from './defaultConfig';
 
-export const Cursor = ({ base, hover }) => {
+export const Cursor = () => {
     const [clicked, setClicked] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [scrollY, setScrollY] = useState(0);
     const { state } = useContext(CursorStore);
 
-    const cursorStyle = GetCursorConfiguration(
-        state.state,
+    const cursorStyle = GetCursorStateStyle(
+        state.base,
+        state.hover,
+        state.cursorState,
         clicked,
         state.activeClass,
-        state.classConfigArr,
-        base,
-        hover
+        state.classConfigArr
     );
 
     const centerStyles = cursorStyle.center;
@@ -111,53 +110,30 @@ const CenterContentInnerWrapper = styled.div`
     margin-top: -${(props) => props.height};
 `;
 
-const GetCursorConfiguration = (
+const GetCursorStateStyle = (
+    base,
+    hover,
     cursorState,
-    cursorClicked,
+    clicked,
     activeClass,
-    classConfigArr,
-    baseInput,
-    hoverInput
+    classArr
 ) => {
-    let defaultSetting;
-    let userSetting;
+    let cursorStyle;
 
-    if (!!cursorState && cursorState === 'hover') {
-        defaultSetting = defaultConfig.hover;
-        userSetting = hoverInput;
-
-        if (!!activeClass) {
-            userSetting = { ...userSetting, ...classConfigArr[activeClass] };
-        }
-    } else {
-        defaultSetting = defaultConfig.base;
-        userSetting = baseInput;
+    switch (cursorState) {
+        case 'base':
+            cursorStyle = base;
+            break;
+        case 'hover':
+            cursorStyle = !!activeClass ? classArr[activeClass] : hover;
+            break;
+        default:
+            break;
     }
 
-    if (cursorClicked) {
-        defaultSetting = defaultSetting.click;
-
-        var clickSetting = { ...userSetting.click };
-
-        if (
-            !!!userSetting.click ||
-            !userSetting.click.hasOwnProperty('center')
-        ) {
-            if (!!userSetting.center) {
-                clickSetting = { ...clickSetting, center: userSetting.center };
-            }
-            if (
-                !!!userSetting.click ||
-                !userSetting.click.hasOwnProperty('ring')
-            ) {
-                if (!!userSetting.ring) {
-                    clickSetting = { ...clickSetting, ring: userSetting.ring };
-                }
-            }
-
-            userSetting = { ...clickSetting };
-        }
-
-        return !!userSetting ? userSetting : defaultSetting;
+    if (clicked) {
+        cursorStyle = cursorStyle.click;
     }
+
+    return cursorStyle;
 };

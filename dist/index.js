@@ -11,9 +11,13 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _reactDeviceDetect = require("react-device-detect");
 
+var _validation = require("./validation");
+
 var _cursor = require("./cursor");
 
 var _globalStyles = require("./globalStyles");
+
+var _defaultConfig = require("./defaultConfig");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -44,13 +48,13 @@ var DonutReducer = function DonutReducer(state, action) {
   switch (action.type) {
     case 'base':
       return _objectSpread(_objectSpread({}, state), {}, {
-        state: action.type,
+        cursorState: action.type,
         activeClass: ''
       });
 
     case 'hover':
       return _objectSpread(_objectSpread({}, state), {}, {
-        state: action.type,
+        cursorState: action.type,
         activeClass: action["class"]
       });
 
@@ -64,30 +68,29 @@ var DonutCursorProvider = function DonutCursorProvider(_ref) {
       base = _ref.base,
       hover = _ref.hover,
       classArr = _ref.classArr;
+  // Validate user (base, hover, class-specific) settings
+  var userInput = (0, _validation.ValidateUserInput)(base, hover, _defaultConfig.defaultConfig.base, _defaultConfig.defaultConfig.hover);
+  classArr = (0, _validation.ValidateClassArray)(classArr, _defaultConfig.defaultConfig.hover);
 
   var _useReducer = (0, _react.useReducer)(DonutReducer, {
     classNamesArr: Object.keys(classArr),
     classConfigArr: classArr,
-    state: 'base',
-    activeClass: ''
+    cursorState: 'base',
+    activeClass: '',
+    base: userInput.base,
+    hover: userInput.hover
   }),
       _useReducer2 = _slicedToArray(_useReducer, 2),
       state = _useReducer2[0],
-      dispatch = _useReducer2[1]; // base = { ...defaultConfig.base, ...base };
-  // hover = { ...defaultConfig.hover, ...hover };
+      dispatch = _useReducer2[1];
 
-
-  var cursor = _reactDeviceDetect.isMobile ? null : /*#__PURE__*/_react["default"].createElement(_cursor.Cursor, {
-    base: base,
-    hover: hover
-  });
   return /*#__PURE__*/_react["default"].createElement(_globalStyles.CursorWrapper, null, /*#__PURE__*/_react["default"].createElement(_globalStyles.GlobalStyle, null), /*#__PURE__*/_react["default"].createElement(CursorStore.Provider, {
     value: {
       state: state,
       dispatch: dispatch
     },
     initialState: state
-  }, children, cursor));
+  }, children, _reactDeviceDetect.isMobile ? null : /*#__PURE__*/_react["default"].createElement(_cursor.Cursor, null)));
 };
 
 exports.DonutCursorProvider = DonutCursorProvider;

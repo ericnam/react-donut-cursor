@@ -1,35 +1,46 @@
 import React, { createContext, useReducer } from 'react';
 import { isBrowser, isMobile } from 'react-device-detect';
 
-// import { defaultConfig } from './defaultConfig';
+import { ValidateUserInput, ValidateClassArray } from './validation';
 import { Cursor } from './cursor';
 import { GlobalStyle, CursorWrapper } from './globalStyles';
+import { defaultConfig } from './defaultConfig';
 
 export const CursorStore = createContext();
 
 const DonutReducer = (state, action) => {
     switch (action.type) {
         case 'base':
-            return { ...state, state: action.type, activeClass: '' };
+            return { ...state, cursorState: action.type, activeClass: '' };
         case 'hover':
-            return { ...state, state: action.type, activeClass: action.class };
+            return {
+                ...state,
+                cursorState: action.type,
+                activeClass: action.class,
+            };
         default:
             break;
     }
 };
 
 export const DonutCursorProvider = ({ children, base, hover, classArr }) => {
+    // Validate user (base, hover, class-specific) settings
+    let userInput = ValidateUserInput(
+        base,
+        hover,
+        defaultConfig.base,
+        defaultConfig.hover
+    );
+    classArr = ValidateClassArray(classArr, defaultConfig.hover);
+
     const [state, dispatch] = useReducer(DonutReducer, {
         classNamesArr: Object.keys(classArr),
         classConfigArr: classArr,
-        state: 'base',
+        cursorState: 'base',
         activeClass: '',
+        base: userInput.base,
+        hover: userInput.hover,
     });
-
-    // base = { ...defaultConfig.base, ...base };
-    // hover = { ...defaultConfig.hover, ...hover };
-
-    let cursor = isMobile ? null : <Cursor base={base} hover={hover} />;
 
     return (
         <CursorWrapper>
@@ -39,8 +50,7 @@ export const DonutCursorProvider = ({ children, base, hover, classArr }) => {
                 initialState={state}
             >
                 {children}
-                {cursor}
-                {/* <Cursor base={base} hover={hover} /> */}
+                {isMobile ? null : <Cursor />}
             </CursorStore.Provider>
         </CursorWrapper>
     );
