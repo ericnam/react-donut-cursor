@@ -34,7 +34,7 @@
     "bugs": {
         "url": "https://github.com/ericnam/react-donut-cursor/issues"
     },
-    "homepage": "https://github.com/ericnam/react-donut-cursor",
+    "homepage": "https://ericnam.github.io/react-donut-cursor/",
     "devDependencies": {
         "@babel/cli": "^7.14.8",
         "@babel/core": "^7.14.8",
