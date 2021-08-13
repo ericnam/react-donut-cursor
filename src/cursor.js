@@ -11,6 +11,7 @@ import { CursorStore } from './index';
  */
 export const Cursor = () => {
     const [clicked, setClicked] = useState(false);
+    const [mouseMoving, setMouseMoving] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [scrollY, setScrollY] = useState(0);
     const { state } = useContext(CursorStore);
@@ -58,11 +59,21 @@ export const Cursor = () => {
     });
 
     const mouseMoveEventListener = (e) => {
+        setMouseMoving(true);
+        setTimeout(() => {
+            setMouseMoving(false);
+        }, 300);
         setMousePosition({ x: e.x, y: e.y + scrollY });
     };
     const mouseScrollEventListener = (e) => {
         let scrollTop = e.srcElement.scrollingElement.scrollTop;
         setScrollY(scrollTop);
+        if (!mouseMoving) {
+            setMousePosition({
+                x: mousePosition.x,
+                y: mousePosition.y + (scrollTop - scrollY),
+            });
+        }
     };
     const mouseDownEventListener = (e) => {
         setClicked(true);
