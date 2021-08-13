@@ -9,7 +9,7 @@ module.exports = merge(common, {
   mode: "production",
   output: {
     path: path.resolve(__dirname, "build"),
-    filename: "app.[contenthash].js",
+    filename: "app.bundle.js",
   },
   devtool: "hidden-source-map",
   module: {
@@ -51,8 +51,8 @@ module.exports = merge(common, {
   plugins: [
     new MiniCssExtractPlugin({
       linkType: "text/css",
-      filename: "[name].[contenthash].css",
-      chunkFilename: '[id].[contenthash].css',
+      filename: "[name].bundle.css",
+      chunkFilename: '[id].bundle.css',
     }),
   ],
   // optimization: {

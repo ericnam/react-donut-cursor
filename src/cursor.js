@@ -62,7 +62,7 @@ export const Cursor = () => {
         setMouseMoving(true);
         setTimeout(() => {
             setMouseMoving(false);
-        }, 300);
+        }, 100);
         setMousePosition({ x: e.x, y: e.y + scrollY });
     };
     const mouseScrollEventListener = (e) => {
