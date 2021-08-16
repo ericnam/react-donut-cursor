@@ -35,7 +35,7 @@ const DonutReducer = (state, action) => {
  * @param {*} param0 
  * @returns 
  */
-export const DonutCursorProvider = ({ children, base, hover, classArr }) => {
+export const DonutCursorProvider = ({ children, base = null, hover = null, classArr = null }) => {
     // Validate user (base, hover, class-specific) settings
     let userInput = ValidateUserInput(
         base,

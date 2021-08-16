@@ -79,9 +79,12 @@ var DonutReducer = function DonutReducer(state, action) {
 
 var DonutCursorProvider = function DonutCursorProvider(_ref) {
   var children = _ref.children,
-      base = _ref.base,
-      hover = _ref.hover,
-      classArr = _ref.classArr;
+      _ref$base = _ref.base,
+      base = _ref$base === void 0 ? null : _ref$base,
+      _ref$hover = _ref.hover,
+      hover = _ref$hover === void 0 ? null : _ref$hover,
+      _ref$classArr = _ref.classArr,
+      classArr = _ref$classArr === void 0 ? null : _ref$classArr;
   // Validate user (base, hover, class-specific) settings
   var userInput = (0, _validation.ValidateUserInput)(base, hover, _defaultConfig.defaultConfig.base, _defaultConfig.defaultConfig.hover);
   classArr = (0, _validation.ValidateClassArray)(classArr, _defaultConfig.defaultConfig.hover);

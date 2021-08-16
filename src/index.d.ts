@@ -1,11 +1,11 @@
 type DonutCursorProviderProps = {
   children: React.ReactNode,
-  base: DonutConfig,
-  hover: DonutConfig,
-  classArr: DonutCustomClass
+  base?: DonutConfig,
+  hover?: DonutConfig,
+  classArr?: DonutCustomClass
 }
 
-export function DonutCursorProvider({ children, base, hover, classArr }: DonutCursorProviderProps): JSX.Element;
+export function DonutCursorProvider({ children, base = null, hover = null, classArr = null }: DonutCursorProviderProps): JSX.Element;
 export function DonutConsumer({ children }: { children: React.ReactNode }): JSX.Element;
 
 export interface Center {

@@ -2,11 +2,11 @@
  * Validates user's input for base and hover states
  * Depending on whether values are missing, default values take
  * place of missing values
- * @param {*} base 
- * @param {*} hover 
- * @param {*} defaultBase 
- * @param {*} defaultHover 
- * @returns 
+ * @param {*} base
+ * @param {*} hover
+ * @param {*} defaultBase
+ * @param {*} defaultHover
+ * @returns
  */
 const ValidateUserInput = (base, hover, defaultBase, defaultHover) => {
     base = ValidateDonutConfig(base, defaultBase);
@@ -18,23 +18,32 @@ const ValidateUserInput = (base, hover, defaultBase, defaultHover) => {
 /**
  * This validation takes in user's class array with specified configurations
  * and validates them to make sure there are configs for each state
- * @param {*} classArray 
- * @param {*} defaultHover 
+ * @param {*} classArray
+ * @param {*} defaultHover
  * @returns Updated class array with validated values
  */
 const ValidateClassArray = (classArray, defaultHover) => {
-    Object.keys(classArray).map((key) => {
-        classArray[key] = ValidateDonutConfig(classArray[key], defaultHover);
-    });
+    if (!!classArray) {
+        Object.keys(classArray).map((key) => {
+            classArray[key] = ValidateDonutConfig(
+                classArray[key],
+                defaultHover
+            );
+        });
+    }
+    else
+    {
+        classArray = {};
+    }
 
     return classArray;
 };
 
 /**
  * Validate the donut configuration, whether base, hover or class-specific
- * @param {*} donutConfig 
- * @param {*} defaultDonutConfig 
- * @returns 
+ * @param {*} donutConfig
+ * @param {*} defaultDonutConfig
+ * @returns
  */
 const ValidateDonutConfig = (donutConfig, defaultDonutConfig) => {
     if (!!donutConfig) {
